@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.healthapp_av.DayReport
+        android:id="@+id/dayReport"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="15dp" />
+
+    <com.healthapp_av.SingleFood
+        android:id="@+id/singleFoodOverview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="15dp">
+
+    </com.healthapp_av.SingleFood>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/addTodayFood"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="75dp"
+        android:layout_marginBottom="10dp"
+        app:cardBackgroundColor="@color/teal"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="5dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingVertical="15dp"
+            android:text="Log Another Food"
+            android:textColor="@color/white"
+            android:textSize="25sp" />
+
+    </androidx.cardview.widget.CardView>
+
+    <com.healthapp_av.FoodRecycler
+        android:id="@+id/foodRecyclerOverview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </com.healthapp_av.FoodRecycler>
+
+</LinearLayout>

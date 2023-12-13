@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <FrameLayout
+            android:id="@+id/searchHolder"
+            android:layout_width="244dp"
+            android:layout_height="match_parent"
+            android:layout_weight="15">
+
+            <SearchView
+                android:id="@+id/searchMyFoods"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            </SearchView>
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/clearButton"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/teal"
+            android:gravity="center"
+            android:paddingHorizontal="15dp"
+            android:text="Clear"
+            android:textColor="@color/white"
+            android:textSize="20dp" />
+
+        <TextView
+            android:id="@+id/populateButton"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/teal"
+            android:gravity="center"
+            android:paddingHorizontal="5dp"
+            android:text="Populate"
+            android:textColor="@color/white"
+            android:textSize="20dp" />
+
+    </LinearLayout>
+
+    <com.healthapp_av.FoodRecycler
+        android:id="@+id/myFoodsRecycler"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</LinearLayout>
