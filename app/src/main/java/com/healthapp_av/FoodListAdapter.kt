@@ -16,11 +16,18 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
+/**
+ *  The FoodRecycler is used in two places. This enum specifies which recycler the adapter is adapted
+ *  to and adjusts what is visible accordingly.
+ */
 enum class FoodListType {
     TodaysFoods,
     MyFoods,
 }
 
+/**
+ *  Adapter for a FoodRecycler. Manages displaying food items within.
+ */
 class FoodListAdapter(
     private val context: Context,
     val mainView: MainView,
@@ -49,6 +56,9 @@ class FoodListAdapter(
     }
 }
 
+/**
+ *  The ViewHolder that will be used inside of the foodRecycler.
+ */
 class FoodItem(itemView: View, context: Context, foodRecycler: FoodRecycler) : RecyclerView.ViewHolder(itemView) {
     lateinit var food: Food
     private var context = context
@@ -63,6 +73,9 @@ class FoodItem(itemView: View, context: Context, foodRecycler: FoodRecycler) : R
     private val animationDuration: Long = 200
     private var isExpanded = false
 
+    /**
+     *  Called when the adapter for the foodRecycler binds a food with a FoodItem.
+     */
     fun onBind(food: Food) {
         this.food = food
         detailCycler.scaleY = 0f
@@ -93,6 +106,9 @@ class FoodItem(itemView: View, context: Context, foodRecycler: FoodRecycler) : R
         else { expand() }
     }
 
+    /**
+     *  When a food has been edited, this will be called to update the view.
+     */
     fun updateFood(food: Food) {
         singleFood.fill(food)
         image.setImage(food, foodRecycler.foodListAdapter.mainView)
@@ -138,6 +154,9 @@ class FoodItem(itemView: View, context: Context, foodRecycler: FoodRecycler) : R
         foodRecycler.foodListAdapter.notifyItemRemoved(adapterPosition)
     }
 
+    /**
+     *  Hides various elements of this view and plays an animation.
+     */
     fun collapse() {
         val collapseAnimation = ObjectAnimator.ofFloat(detailCycler, "scaleY", 1f, 0f)
         collapseAnimation.duration = animationDuration
@@ -161,6 +180,9 @@ class FoodItem(itemView: View, context: Context, foodRecycler: FoodRecycler) : R
         collapseAnimation.start()
     }
 
+    /**
+     *  Shows various elements of this view and plays an animation.
+     */
     private fun expand() {
         val expandAnimation = ObjectAnimator.ofFloat(detailCycler, "scaleY", 0f, 1f)
         detailCycler.visibility = View.VISIBLE

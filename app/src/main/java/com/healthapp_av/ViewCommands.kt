@@ -6,13 +6,26 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
+/**
+ *  Manages the commands that should be executed when a new page is brought into view.
+ */
 class CommandManager {
+    /**
+     *  A list of commands that should be executed when a specific page is brought into view.
+     */
     private var commands: ArrayList<Command> = ArrayList()
 
+    /**
+     *  Queue a new command.
+     */
     fun newCommand(command: Command) {
         commands.add(command)
     }
 
+    /**
+     *  Goes through the stored list of commands, if the new page being brought into view
+     *  is the page assigned to the command, that command will be exectued.
+     */
     fun executeRelevantCommands(newPagePosition: Int) {
         var newCommands: ArrayList<Command> = ArrayList()
         for (command in commands) {
@@ -27,7 +40,11 @@ class CommandManager {
     }
 }
 
-
+/**
+ *  A specific action is defined in the doExecute function. When execute is called, the doExecute
+ *  code will be run in a coroutine. The received page specifies that the execute function should
+ *  be called the next time that page is brought into view.
+ */
 abstract class Command(
     private var pageAdapter: PageAdapter,
     var pageToExecute: Pages,

@@ -6,16 +6,35 @@ import android.graphics.BitmapFactory
 import android.view.View
 import androidx.viewpager2.widget.ViewPager2
 
+/**
+ *  Controls how information is presented in the UI. Makes use of drawables and layout XML's
+ *  in the res folder.
+ */
 class MainView(private var controller: Controller) {
     var activity = controller.mainActivity
+    /**
+     *  Information in the view is presented in pages. The list of pages can be found in the Pages enum.
+     */
     var viewPager: ViewPager2
     var navigation: Navigation
     var pageAdapter: PageAdapter
+    /**
+     *  This is true when the myFoods page is visible and the user is adding a new food to todays log.
+     */
     var selectingMyFood = false
     var currentPage: Pages
     private var startPage = Pages.Overview
     private var commandManager = CommandManager()
+    /**
+     *  When a food is being searched for in the myFoods page, this list will contain
+     *  the foods that match the search (tag or name). When getMyFoods is called (by the
+     *  foodListAdapter or any other place) if this list is not null, the data within this list
+     *  will be return instead of the actual list of myFoods retrieved from the model.
+     */
     private var proxyMyFoodsSearch: ArrayList<Food>? = null
+    /**
+     *  Cached bitmaps to be reused by FoodItem ViewHolders in recyclers.
+     */
     lateinit var images: HashMap<Int, Bitmap>
 
     init {
@@ -31,6 +50,9 @@ class MainView(private var controller: Controller) {
         navigation.setBindings(viewPager)
     }
 
+    /**
+     *  Initializes the cached bitmaps.
+     */
     private fun loadImages(context: Context) {
         images = hashMapOf(
             R.drawable.fruit to BitmapFactory.decodeResource(
@@ -56,6 +78,10 @@ class MainView(private var controller: Controller) {
         )
     }
 
+    /**
+     *  Set the callback for when a page is changed. Calls leavePage for the current page.
+     *  Tells the command manager to make any updates to the new page. Then sets the current page.
+     */
     private fun setOnPageChange() {
         viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
@@ -67,6 +93,9 @@ class MainView(private var controller: Controller) {
         })
     }
 
+    /**
+     *  Returns the view inside of the current Page.
+     */
     fun getCurrentPageView(): View {
         return pageAdapter.pages[viewPager.currentItem]!!.itemView
     }
@@ -79,6 +108,9 @@ class MainView(private var controller: Controller) {
         }
     }
 
+    /**
+     *  Returns myFoods from the model, or the proxyMyFoods if its not null.
+     */
     fun getMyFoods(): ArrayList<Food> {
         if (proxyMyFoodsSearch != null) { return proxyMyFoodsSearch!! }
         return controller.getMyFoods()

@@ -32,6 +32,10 @@ class WebData {
 
     private val apiKey = "a0m9FBw5/m3K+TfcPC2e1A==vcGHQ00C2yr9s228"
 
+    /**
+     *  Query's the web API. Once a result has been returned, the doWithResult lambda function
+     *  will be called, it will be passed the result.
+     */
     fun search(query: String, doWithResult: (Food?) -> Unit) {
         CoroutineScope(Dispatchers.Main).launch {
             val data = CoroutineScope(Dispatchers.IO).async { getData(query) }.await()
@@ -43,6 +47,9 @@ class WebData {
         }
     }
 
+    /**
+     *  Query's the web API, returns the result.
+     */
     private suspend fun getData(query: String): FoodDataList? {
         return withContext(Dispatchers.IO) {
             var items: FoodDataList? = null

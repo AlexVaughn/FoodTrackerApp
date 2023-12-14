@@ -1,10 +1,21 @@
 package com.healthapp_av
 
+/**
+ *  Maintains data. Contains two primary components.
+ *  1. FoodDatabase which is a SQLite database.
+ *  2. WebData which can access a web api and retrieve new food data.
+ */
 class Model(private var controller: Controller) {
 
     private var foodDatabase = FoodDatabase(controller.mainActivity)
     private var webData = WebData()
+    /**
+     *  A list of foods for today that the user has logged. Presented in the overview.
+     */
     var todaysFoods: ArrayList<Food> = ArrayList()
+    /**
+     *  A list of food objects that mirror what is in the databse.
+     */
     var myFoods: ArrayList<Food> = ArrayList()
 
     fun searchWeb(query: String, doWithResult: (Food?) -> Unit) {
@@ -19,17 +30,26 @@ class Model(private var controller: Controller) {
         return foodDatabase.generateNewId()
     }
 
+    /**
+     *  Add a new food to the database and myFoods.
+     */
     fun addFood(food: Food) {
         foodDatabase.add(food)
         myFoods.add(food)
     }
 
+    /**
+     *  Remove a single food from the database, myFoods, and todaysFoods.
+     */
     fun removeMyFood(food: Food) {
         foodDatabase.remove(food.id)
         myFoods.remove(food)
         todaysFoods.remove(food)
     }
 
+    /**
+     *  Empty the database, myFoods, and todaysFoods.
+     */
     fun removeAll() {
         foodDatabase.removeAll()
         myFoods.clear()
@@ -56,6 +76,7 @@ class Model(private var controller: Controller) {
     }
 
     /**
+     *  Tells the database to fill itself with dummy data.
      *  The database must be wiped before filling it with dummy data.
      */
     fun populate() {

@@ -1,7 +1,14 @@
 package com.healthapp_av
 
-import android.util.Log
-
+/**
+ *  The primary object that controls the flow of information inside the activity.
+ *  To begin the application, this receives a reference to the main activity.
+ *  Contains two primary components:
+ *  1. Model which contains data.
+ *  2. MainView which controls the display of information in the UI.
+ *
+ *  The model is created first, then the view.
+ */
 class Controller(
     var mainActivity: MainActivity
 ) {

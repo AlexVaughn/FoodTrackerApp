@@ -1,3 +1,7 @@
+/**
+ * Various custom classes/views that can be used in a layout.xml. Having these custom views makes
+ * the code very modular and reusable
+ */
 package com.healthapp_av
 
 import android.content.Context

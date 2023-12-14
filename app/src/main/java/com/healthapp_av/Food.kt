@@ -104,6 +104,9 @@ class Food (
     }
 }
 
+/**
+ *  Pairs an ID to an image.
+ */
 enum class ImageIds(val value: Int) {
     None(-1),
     Fruit(1),
@@ -113,6 +116,9 @@ enum class ImageIds(val value: Int) {
     Dairy(5),
 }
 
+/**
+ *  Converts a string into an ImageId.
+ */
 fun imageNameToId(name: String): Int {
     return when (name) {
         "Fruit" -> ImageIds.Fruit.value
@@ -124,6 +130,9 @@ fun imageNameToId(name: String): Int {
     }
 }
 
+/**
+ *  Converts an imageId as an int into a string.
+ */
 fun imageIdToName(id: Int): String {
     return when (id) {
         ImageIds.Fruit.value -> "Fruit"

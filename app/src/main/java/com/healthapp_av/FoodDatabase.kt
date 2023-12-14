@@ -6,6 +6,9 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.content.ContentValues
 
+/**
+ *  Sql statement to create the food table.
+ */
 private const val CREATE_TABLE = """
         CREATE TABLE IF NOT EXISTS "foods" (
         "id"	        INTEGER NOT NULL,
@@ -27,6 +30,9 @@ private const val CREATE_TABLE = """
         );
     """
 
+/**
+ *  Sql statement to insert dummy data.
+ */
 private const val DUMMY_DATA = """
         INSERT INTO "foods" VALUES (1,'Apple',53,100.0,0.2,0.0,0.3,1.0,11.0,0.0,14.1,2.4,10.3,'fruit,healthy,snack',1);
         INSERT INTO "foods" VALUES (2,'Pizza',262,100.0,9.8,4.5,11.4,587.0,217.0,16.0,32.9,2.3,3.6,'fast food',-1);
@@ -65,16 +71,25 @@ class FoodDatabase(context: Context): SQLiteOpenHelper(context, "FoodDatabase", 
         reset(db)
     }
 
+    /**
+     *  Resets the database by dropping it and recreating it. The resulting database will be empty.
+     */
     private fun reset(db: SQLiteDatabase?) {
         db?.execSQL("DROP TABLE IF EXISTS foods")
         onCreate(db)
     }
 
+    /**
+     *  Uses the dummy data sql statement to fill the database.
+     */
     fun insertDummyData() {
         DUMMY_DATA.trimIndent().split("\n")
             .forEach { writableDatabase.execSQL(it) }
     }
 
+    /**
+     *  Extracts the data from the received cursor and returns an array list of food.
+     */
     private fun cursorToFoodList(cursor: Cursor?): ArrayList<Food> {
         var foods: ArrayList<Food> = ArrayList()
         if (cursor == null) { return foods }
@@ -107,14 +122,23 @@ class FoodDatabase(context: Context): SQLiteOpenHelper(context, "FoodDatabase", 
         return index
     }
 
+    /**
+     *  Creates a new unique food ID.
+     */
     fun generateNewId(): Int {
         return all().maxBy { it.id }.id + 1
     }
 
+    /**
+     *  Get a food arrayList of all the foods stored in the database.
+     */
     fun all(): ArrayList<Food> {
         return cursorToFoodList(readableDatabase.rawQuery("SELECT * FROM $tableName", null))
     }
 
+    /**
+     *  Inserts a new food into the database.
+     */
     fun add(food: Food) {
         writableDatabase.execSQL("INSERT INTO \"$tableName\" VALUES (" +
                 "${food.id}," +
@@ -135,6 +159,10 @@ class FoodDatabase(context: Context): SQLiteOpenHelper(context, "FoodDatabase", 
                 ");");
     }
 
+    /**
+     *  Edits a food in the database to match the data in the received food object.
+     *  Finds the food to edit by food id.
+     */
     fun edit(editedFood: Food) {
         val contentValues = ContentValues()
         contentValues.put("name", editedFood.name)
@@ -156,17 +184,27 @@ class FoodDatabase(context: Context): SQLiteOpenHelper(context, "FoodDatabase", 
         writableDatabase.update(tableName, contentValues, whereClause, whereArgs)
     }
 
+    /**
+     *  Removes the food in the database using the received id.
+     */
     fun remove(id: Int) {
         val whereClause = "id=?"
         val whereArgs = arrayOf(id.toString())
         writableDatabase.delete(tableName, whereClause, whereArgs)
     }
 
+    /**
+     *  Wipe all data in the databse.
+     */
     fun removeAll() {
         writableDatabase.delete(tableName, null, null)
         reset(writableDatabase)
     }
 
+    /**
+     *  Returns a list of foods from the database where the received query string is contained in
+     *  the name string or the tags string.
+     */
     fun queryNameOrTag(query: String): ArrayList<Food> {
         return cursorToFoodList(readableDatabase.rawQuery(
             "SELECT * FROM $tableName WHERE name LIKE '%$query%' OR tags LIKE '%$query%'", null))

@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 
 /**
- *  Used for matching a page layout to an index.
+ *  This enum is used for matching a page layout to an index.
  */
 enum class Pages {
     Overview,
@@ -17,11 +17,22 @@ enum class Pages {
     Editor,
 }
 
+/**
+ *  Adapter for the ViewPager in MainView. The user may swipe left or right or use the navigation
+ *  bar to cycle through the pages. 1 page takes up the whole screen, except for the navigation bar.
+ *  The ViewHolder items for this recyclerView is a Page class. There are 4 pages. Overview, MyFoods,
+ *  and CreateNew are accessible by swiping or via the navigation bar. The 4th page, the editor, is
+ *  locked by default, it is only accessible through the CreateNew page or by clicking edit on a FoodItem.
+ */
 class PageAdapter(
     private var context: Context,
     private var mainView: MainView,
 ):RecyclerView.Adapter<Page>() {
 
+    /**
+     *  Holds references to each page. Initialized to null. When a page is created or bound, the
+     *  reference will be updated in this list.
+     */
     var pages: MutableList<Page?> = MutableList(Pages.entries.size) { null }
     private var allowEditor = false
 
@@ -58,16 +69,26 @@ class PageAdapter(
         }
     }
 
+    /**
+     *  Unlocks the editor page.
+     */
     fun enableEditor() {
         allowEditor = true
         notifyItemInserted(Pages.Editor.ordinal)
     }
 
+    /**
+     *  Locks the editor page.
+     */
     fun disableEditor() {
         allowEditor = false
         notifyItemRemoved(Pages.Editor.ordinal)
     }
 
+    /**
+     *  Called by MainView when a new page is being moved into view. This function is typically used
+     *  to cleanup the page that is being left (such as emptying fields in the editor).
+     */
     fun leavePage(currentPage: Pages) {
         when (currentPage) {
             Pages.MyFoods -> pages[currentPage.ordinal]!!.itemView.findViewById<MyFoods>(R.id.myFoods).onPageExit()
@@ -77,4 +98,7 @@ class PageAdapter(
     }
 }
 
+/**
+ *  ViewHolder used in the ViewPager recycler/adapter.
+ */
 class Page(itemView: View): RecyclerView.ViewHolder(itemView) {}
